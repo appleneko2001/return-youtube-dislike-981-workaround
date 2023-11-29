@@ -100,17 +100,25 @@ function getButtons() {
 }
 
 function getDislikeButton() {
-  return getButtons().children[0].tagName ===
-  "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().children[0].children[1] === undefined ? document.querySelector("#segmented-dislike-button") : getButtons().children[0].children[1]
-    : getButtons().children[1];
+  // Youtube changed their layout since the UI update at October (or September? I dont remember lol)
+  // The "optimal" way to get the dislike button workaround is here, for new UI
+  // Tested on desktop YouTube web only, mobile is not tried yet.
+  let buttons = getButtons();
+  let buttonsWrapper = buttons.children[0].querySelector(".YtSegmentedLikeDislikeButtonViewModelSegmentedButtonsWrapper");
+  return buttons.children[0].tagName ===
+  "SEGMENTED-LIKE-DISLIKE-BUTTON-VIEW-MODEL"
+    ? buttonsWrapper.children[1] === undefined ?
+        document.querySelector("#segmented-dislike-button") :
+        buttonsWrapper.children[1]
+    : buttons.children[1];
 }
 
 function getLikeButton() {
-  return getButtons().children[0].tagName ===
-  "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? document.querySelector("#segmented-like-button") !== null ? document.querySelector("#segmented-like-button") : getButtons().children[0].children[0]
-    : getButtons().children[0];
+  let buttons = getButtons();
+  return buttons.children[0].tagName ===
+  "SEGMENTED-LIKE-DISLIKE-BUTTON-VIEW-MODEL"
+    ? document.querySelector("#segmented-like-button") !== null ? document.querySelector("#segmented-like-button") : buttons.children[0].children[0]
+    : buttons.children[0];
 }
 
 function getLikeTextContainer() {
